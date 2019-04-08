@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header" @click="showDetail">
     <div class="content-wrapper">
       <div class="avatar">
         <img width="64" height="64" :src="seller.avatar">
@@ -23,8 +23,7 @@
       </div>
     </div>
     <div class="bulletin-wrapper">
-      <span class="bulletion-title"></span>
-      <span class="bulletin-text">{{seller.bulletin}}</span>
+      <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
       <i class="icon-keyboard_arrow_right"></i>
     </div>
     <div class="background">
@@ -33,26 +32,37 @@
   </div>
 </template>
 
-<script>
-import SupportIco from 'components/support-ico/support-ico'
+<script type="text/ecmascript-6">
+  import SupportIco from 'components/support-ico/support-ico'
 
-export default {
-  name: 'v-header',
-  props: {
-    seller: {
-      type: Object,
-      default () {
-        return {}
+  export default {
+    name: 'v-header',
+    props: {
+      seller: {
+        type: Object,
+        // 默认为空，避免报错
+        default () {
+          return {}
+        }
       }
+    },
+    methods: {
+      showDetail () {
+        this.headerDetailComp = this.headerDetailComp || this.$createHeaderDetail({
+          $props: {
+            seller: 'seller'
+          }
+        })
+        this.headerDetailComp.show()
+      }
+    },
+    components: {
+      SupportIco
     }
-  },
-  components: {
-    SupportIco
   }
-}
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/mixin"
   @import "~common/stylus/variable"
 
@@ -65,7 +75,7 @@ export default {
       position: relative
       display: flex
       align-items: center
-      padding:24px 12px 18px 24px
+      padding: 24px 12px 18px 24px
       .avatar
         flex: 0 0 64px
         width: 64px
@@ -143,7 +153,7 @@ export default {
         text-overflow: ellipsis
         font-size: $fontsize-small-s
       .icon-keyboard_arrow_right
-        float: 0 0 10px
+        flex: 0 0 10px
         width: 10px
         font-size: $fontsize-small-s
     .background

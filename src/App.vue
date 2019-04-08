@@ -1,16 +1,13 @@
 <template>
   <div id="app">
     <v-header :seller="seller"></v-header>
-    <div class="tab">
-      <div class="tab-item">商品</div>
-      <div class="tab-item">评论</div>
-      <div class="tab-item">商家</div>
-    </div>
+    <header-detail :seller="seller"></header-detail>
   </div>
 </template>
 
 <script>
   import VHeader from 'components/v-header/v-header'
+  import HeaderDetail from 'components/header-detail/header-detail'
   import { getSeller } from 'api'
 
   export default {
@@ -31,18 +28,11 @@
       }
     },
     components: {
-      VHeader
+      VHeader,
+      HeaderDetail
     }
   }
 </script>
 <style lang="stylus">
-  #app
-    .tab
-      display: flex
-      width: 100%
-      height: 40px
-      line-height: 40px
-      .tab-item
-        flex: 1
-        text-align: center
+
 </style>
