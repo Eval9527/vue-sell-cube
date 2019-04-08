@@ -53,6 +53,7 @@
             seller: 'seller'
           }
         })
+        // 执行 header-detail 组件的 show() 方法
         this.headerDetailComp.show()
       }
     },
