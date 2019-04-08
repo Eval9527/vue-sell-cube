@@ -1,11 +1,15 @@
 <template>
   <div id="app">
     <v-header :seller="seller"></v-header>
+    <div class="tab-wrapper">
+      <tab></tab>
+    </div>
   </div>
 </template>
 
 <script>
   import VHeader from 'components/v-header/v-header'
+  import Tab from 'components/tab/tab'
   import { getSeller } from 'api'
 
   export default {
@@ -26,7 +30,8 @@
       }
     },
     components: {
-      VHeader
+      VHeader,
+      Tab
     }
   }
 </script>
