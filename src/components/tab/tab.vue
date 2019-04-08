@@ -2,6 +2,7 @@
   <div class="tab">
     <cube-tab-bar
       :showSlider=true
+      :useTransition=false
       v-model="selectedLabel"
       :data="tabs"
       ref="tabBar"
@@ -15,6 +16,9 @@
         :show-dots=false
         :initial-index="index"
         ref="slide"
+        @change="onChange"
+        @scroll="onScroll"
+        :options="slideOptions"
       >
         <cube-slide-item>
           <goods></goods>
@@ -37,7 +41,7 @@
 
   export default {
     name: 'tab',
-    data() {
+    data () {
       return {
         index: 0,
         tabs: [{
@@ -46,20 +50,37 @@
           label: '评价'
         }, {
           label: '商家'
-        }]
+        }],
+        slideOptions: {
+          listenScroll: true,
+          probeType: 3,
+          // 滚动方向，阈值为 0
+          directionLockThreshold: 0
+        }
       }
     },
     computed: {
       selectedLabel: {
-        get() {
+        get () {
           return this.tabs[this.index].label
         },
         // 计算当前 index
-        set(newVal) {
+        set (newVal) {
           this.index = this.tabs.findIndex((value) => {
             return value.label === newVal
           })
         }
+      }
+    },
+    methods: {
+      onChange (current) {
+        this.index = current
+      },
+      onScroll (pos) {
+        const tabBarWidth = this.$refs.tabBar.$el.clientWidth
+        const slideWidth = this.$refs.slide.slide.scrollerWidth
+        const transform = -pos.x / slideWidth * tabBarWidth
+        this.$refs.tabBar.setSliderTransform(transform)
       }
     },
     components: {
@@ -77,8 +98,10 @@
     display: flex
     flex-direction: column
     height: 100%
+
     >>> .cube-tab
       padding: 10px 0
+
     .slide-wrapper
       flex: 1
       overflow: hidden
