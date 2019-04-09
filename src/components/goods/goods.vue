@@ -54,31 +54,32 @@
                   <span class="now">￥{{food.price}}</span>
                   <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
-                <!--                <div class="cart-control-wrapper">-->
-                <!--                  <cart-control @add="onAdd" :food="food"></cart-control>-->
-                <!--                </div>-->
+                <div class="cart-control-wrapper">
+                  <cart-control :food="food"></cart-control>
+                </div>
               </div>
             </li>
           </ul>
         </cube-scroll-nav-panel>
       </cube-scroll-nav>
     </div>
-        <div class="shop-cart-wrapper">
-          <shop-cart
-            :delivery-price="seller.deliveryPrice"
-            :min-price="seller.minPrice"></shop-cart>
-<!--          <shop-cart-->
-<!--            ref="shopCart"-->
-<!--            :select-foods="selectFoods"-->
-<!--            :delivery-price="seller.deliveryPrice"-->
-<!--            :min-price="seller.minPrice"></shop-cart>-->
-        </div>
+    <div class="shop-cart-wrapper">
+      <shop-cart
+        :select-foods="selectFoods"
+        :delivery-price="seller.deliveryPrice"
+        :min-price="seller.minPrice"></shop-cart>
+      <!--          <shop-cart-->
+      <!--            ref="shopCart"-->
+      <!--            :select-foods="selectFoods"-->
+      <!--            :delivery-price="seller.deliveryPrice"-->
+      <!--            :min-price="seller.minPrice"></shop-cart>-->
+    </div>
   </div>
 </template>
 
 <script>
   import { getGoods } from 'api'
-  // import CartControl from 'components/cart-control/cart-control'
+  import CartControl from 'components/cart-control/cart-control'
   import ShopCart from 'components/shop-cart/shop-cart'
   // import Food from 'components/food/food'
   // import SupportIco from 'components/support-ico/support-ico'
@@ -105,36 +106,36 @@
       }
     },
     computed: {
-      seller() {
+      seller () {
         return this.data.seller
+      },
+      selectFoods () {
+        let foods = []
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (food.count) {
+              foods.push(food)
+            }
+          })
+        })
+        return foods
       }
-    //   selectFoods() {
-    //     let foods = []
-    //     this.goods.forEach((good) => {
-    //       good.foods.forEach((food) => {
-    //         if (food.count) {
-    //           foods.push(food)
-    //         }
-    //       })
-    //     })
-    //     return foods
-    //   },
-    //   barTxts() {
-    //     let ret = []
-    //     this.goods.forEach((good) => {
-    //       const {type, name, foods} = good
-    //       let count = 0
-    //       foods.forEach((food) => {
-    //         count += food.count || 0
-    //       })
-    //       ret.push({
-    //         type,
-    //         name,
-    //         count
-    //       })
-    //     })
-    //     return ret
-    //   }
+      //   barTxts() {
+      //     let ret = []
+      //     this.goods.forEach((good) => {
+      //       const {type, name, foods} = good
+      //       let count = 0
+      //       foods.forEach((food) => {
+      //         count += food.count || 0
+      //       })
+      //       ret.push({
+      //         type,
+      //         name,
+      //         count
+      //       })
+      //     })
+      //     return ret
+      //   }
     },
     methods: {
       fetch () {
@@ -151,50 +152,50 @@
       //       this.goods = goods
       //     })
       //   }
+      // },
+      //   selectFood(food) {
+      //     this.selectedFood = food
+      //     this._showFood()
+      //     this._showShopCartSticky()
+      //   },
+      // onAdd (target) {
+      //   this.$refs.shopCart.drop(target)
+      // },
+      //   _showFood() {
+      //     this.foodComp = this.foodComp || this.$createFood({
+      //       $props: {
+      //         food: 'selectedFood'
+      //       },
+      //       $events: {
+      //         add: (target) => {
+      //           this.shopCartStickyComp.drop(target)
+      //         },
+      //         leave: () => {
+      //           this._hideShopCartSticky()
+      //         }
+      //       }
+      //     })
+      //     this.foodComp.show()
+      //   },
+      //   _showShopCartSticky() {
+      //     this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
+      //       $props: {
+      //         selectFoods: 'selectFoods',
+      //         deliveryPrice: this.seller.deliveryPrice,
+      //         minPrice: this.seller.minPrice,
+      //         fold: true
+      //       }
+      //     })
+      //     this.shopCartStickyComp.show()
+      //   },
+      //   _hideShopCartSticky() {
+      //     this.shopCartStickyComp.hide()
+      //   }
     },
-    //   selectFood(food) {
-    //     this.selectedFood = food
-    //     this._showFood()
-    //     this._showShopCartSticky()
-    //   },
-    //   onAdd(target) {
-    //     this.$refs.shopCart.drop(target)
-    //   },
-    //   _showFood() {
-    //     this.foodComp = this.foodComp || this.$createFood({
-    //       $props: {
-    //         food: 'selectedFood'
-    //       },
-    //       $events: {
-    //         add: (target) => {
-    //           this.shopCartStickyComp.drop(target)
-    //         },
-    //         leave: () => {
-    //           this._hideShopCartSticky()
-    //         }
-    //       }
-    //     })
-    //     this.foodComp.show()
-    //   },
-    //   _showShopCartSticky() {
-    //     this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
-    //       $props: {
-    //         selectFoods: 'selectFoods',
-    //         deliveryPrice: this.seller.deliveryPrice,
-    //         minPrice: this.seller.minPrice,
-    //         fold: true
-    //       }
-    //     })
-    //     this.shopCartStickyComp.show()
-    //   },
-    //   _hideShopCartSticky() {
-    //     this.shopCartStickyComp.hide()
-    //   }
-    // },
     components: {
       // Bubble,
       // SupportIco,
-      // CartControl,
+      CartControl,
       ShopCart
       // Food
     }

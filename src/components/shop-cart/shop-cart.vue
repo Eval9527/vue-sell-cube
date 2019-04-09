@@ -8,7 +8,7 @@
               <i class="icon-shopping_cart" :class="{'highlight':totalCount>0}"></i>
             </div>
             <div class="num" v-show="totalCount>0">
-<!--              <bubble :num="totalCount"></bubble>-->
+              <bubble :num="totalCount"></bubble>
             </div>
           </div>
           <div class="price" :class="{'highlight':totalPrice>0}">￥{{totalPrice}}</div>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-  // import Bubble from 'components/bubble/bubble'
+  import Bubble from 'components/bubble/bubble'
   //
   // const BALL_LEN = 10
   // const innerClsHook = 'inner-hook'
@@ -86,14 +86,14 @@
     //   this.dropBalls = []
     // },
     computed: {
-      totalPrice() {
+      totalPrice () {
         let total = 0
         this.selectFoods.forEach((food) => {
           total += food.price * food.count
         })
         return total
       },
-      totalCount() {
+      totalCount () {
         let count = 0
         this.selectFoods.forEach((food) => {
           count += food.count
@@ -101,7 +101,7 @@
         return count
       },
       // 支付描述
-      payDesc() {
+      payDesc () {
         if (this.totalPrice === 0) {
           return `￥${this.minPrice}元起送`
         } else if (this.totalPrice < this.minPrice) {
@@ -112,13 +112,14 @@
         }
       },
       // 支付按钮状态
-      payClass() {
+      payClass () {
         if (!this.totalCount || this.totalPrice < this.minPrice) {
           return 'not-enough'
         } else {
           return 'enough'
         }
       }
+    },
     // },
     // methods: {
     //   toggleList() {
@@ -228,8 +229,8 @@
     //     }
     //   }
     // },
-    // components: {
-    //   Bubble
+    components: {
+      Bubble
     }
   }
 </script>
