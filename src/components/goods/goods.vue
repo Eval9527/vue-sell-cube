@@ -7,28 +7,28 @@
         :options="scrollOptions"
         v-if="goods.length"
       >
-        <!--        <template slot="bar" slot-scope="props">-->
-        <!--          <cube-scroll-nav-bar-->
-        <!--            direction="vertical"-->
-        <!--            :labels="props.labels"-->
-        <!--            :txts="barTxts"-->
-        <!--            :current="props.current"-->
-        <!--          >-->
-        <!--            <template slot-scope="props">-->
-        <!--              <div class="text">-->
-        <!--                <support-ico-->
-        <!--                  v-if="props.txt.type>=1"-->
-        <!--                  :size=3-->
-        <!--                  :type="props.txt.type"-->
-        <!--                ></support-ico>-->
-        <!--                <span>{{props.txt.name}}</span>-->
-        <!--                <span class="num" v-if="props.txt.count">-->
-        <!--                  <bubble :num="props.txt.count"></bubble>-->
-        <!--                </span>-->
-        <!--              </div>-->
-        <!--            </template>-->
-        <!--          </cube-scroll-nav-bar>-->
-        <!--        </template>-->
+        <template slot="bar" slot-scope="props">
+          <cube-scroll-nav-bar
+            direction="vertical"
+            :labels="props.labels"
+            :txts="barTxts"
+            :current="props.current"
+          >
+            <template slot-scope="props">
+              <div class="text">
+                <support-ico
+                  v-if="props.txt.type>=1"
+                  :size=3
+                  :type="props.txt.type"
+                ></support-ico>
+                <span>{{props.txt.name}}</span>
+                <span class="num" v-if="props.txt.count">
+                          <bubble :num="props.txt.count"></bubble>
+                        </span>
+              </div>
+            </template>
+          </cube-scroll-nav-bar>
+        </template>
         <cube-scroll-nav-panel
           v-for="good in goods"
           :key="good.name"
@@ -69,11 +69,6 @@
         :select-foods="selectFoods"
         :delivery-price="seller.deliveryPrice"
         :min-price="seller.minPrice"></shop-cart>
-      <!--          <shop-cart-->
-      <!--            ref="shopCart"-->
-      <!--            :select-foods="selectFoods"-->
-      <!--            :delivery-price="seller.deliveryPrice"-->
-      <!--            :min-price="seller.minPrice"></shop-cart>-->
     </div>
   </div>
 </template>
@@ -83,8 +78,8 @@
   import CartControl from 'components/cart-control/cart-control'
   import ShopCart from 'components/shop-cart/shop-cart'
   // import Food from 'components/food/food'
-  // import SupportIco from 'components/support-ico/support-ico'
-  // import Bubble from 'components/bubble/bubble'
+  import SupportIco from 'components/support-ico/support-ico'
+  import Bubble from 'components/bubble/bubble'
 
   export default {
     name: 'goods',
@@ -120,23 +115,23 @@
           })
         })
         return foods
+      },
+      barTxts () {
+        let ret = []
+        this.goods.forEach((good) => {
+          const { type, name, foods } = good
+          let count = 0
+          foods.forEach((food) => {
+            count += food.count || 0
+          })
+          ret.push({
+            type,
+            name,
+            count
+          })
+        })
+        return ret
       }
-      //   barTxts() {
-      //     let ret = []
-      //     this.goods.forEach((good) => {
-      //       const {type, name, foods} = good
-      //       let count = 0
-      //       foods.forEach((food) => {
-      //         count += food.count || 0
-      //       })
-      //       ret.push({
-      //         type,
-      //         name,
-      //         count
-      //       })
-      //     })
-      //     return ret
-      //   }
     },
     methods: {
       fetch () {
@@ -194,8 +189,8 @@
       //   }
     },
     components: {
-      // Bubble,
-      // SupportIco,
+      Bubble,
+      SupportIco,
       CartControl,
       ShopCart
       // Food
