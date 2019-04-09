@@ -27,6 +27,7 @@
         } else {
           this.food.count++
         }
+        // 向上触发 add 事件
         this.$emit(EVENT_ADD, event.target)
       },
       decrease () {
