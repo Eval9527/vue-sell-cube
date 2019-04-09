@@ -71,9 +71,16 @@
         }
       }
     },
+    mounted() {
+      // 首次进入时执行一次 onChange 方法获取 goods 数据
+      this.onChange(this.index)
+    },
     methods: {
       onChange (current) {
         this.index = current
+        // 切换页面时 ajax 请求
+        const component = this.$refs.component[current]
+        component.fetch && component.fetch()
       },
       onScroll (pos) {
         const tabBarWidth = this.$refs.tabBar.$el.clientWidth
