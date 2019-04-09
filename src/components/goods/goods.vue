@@ -63,20 +63,23 @@
         </cube-scroll-nav-panel>
       </cube-scroll-nav>
     </div>
-    <!--    <div class="shop-cart-wrapper">-->
-    <!--      <shop-cart-->
-    <!--        ref="shopCart"-->
-    <!--        :select-foods="selectFoods"-->
-    <!--        :delivery-price="seller.deliveryPrice"-->
-    <!--        :min-price="seller.minPrice"></shop-cart>-->
-    <!--    </div>-->
+        <div class="shop-cart-wrapper">
+          <shop-cart
+            :delivery-price="seller.deliveryPrice"
+            :min-price="seller.minPrice"></shop-cart>
+<!--          <shop-cart-->
+<!--            ref="shopCart"-->
+<!--            :select-foods="selectFoods"-->
+<!--            :delivery-price="seller.deliveryPrice"-->
+<!--            :min-price="seller.minPrice"></shop-cart>-->
+        </div>
   </div>
 </template>
 
 <script>
   import { getGoods } from 'api'
   // import CartControl from 'components/cart-control/cart-control'
-  // import ShopCart from 'components/shop-cart/shop-cart'
+  import ShopCart from 'components/shop-cart/shop-cart'
   // import Food from 'components/food/food'
   // import SupportIco from 'components/support-ico/support-ico'
   // import Bubble from 'components/bubble/bubble'
@@ -94,17 +97,17 @@
     data () {
       return {
         goods: [],
-        selectedFood: {},
+        // selectedFood: {},
         scrollOptions: {
           click: false,
           directionLockThreshold: 0
         }
       }
     },
-    // computed: {
-    //   seller() {
-    //     return this.data.seller
-    //   },
+    computed: {
+      seller() {
+        return this.data.seller
+      }
     //   selectFoods() {
     //     let foods = []
     //     this.goods.forEach((good) => {
@@ -132,7 +135,7 @@
     //     })
     //     return ret
     //   }
-    // },
+    },
     methods: {
       fetch () {
         // 获取 goods 数据
@@ -148,7 +151,7 @@
       //       this.goods = goods
       //     })
       //   }
-    }
+    },
     //   selectFood(food) {
     //     this.selectedFood = food
     //     this._showFood()
@@ -188,13 +191,13 @@
     //     this.shopCartStickyComp.hide()
     //   }
     // },
-    // components: {
-    //   Bubble,
-    //   SupportIco,
-    //   CartControl,
-    //   ShopCart,
-    //   Food
-    // }
+    components: {
+      // Bubble,
+      // SupportIco,
+      // CartControl,
+      ShopCart
+      // Food
+    }
   }
 </script>
 
