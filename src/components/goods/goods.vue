@@ -37,6 +37,7 @@
         >
           <ul>
             <li
+              @click="selectFood(food)"
               v-for="food in good.foods"
               :key="food.name"
               class="food-item"
@@ -94,7 +95,7 @@
     data () {
       return {
         goods: [],
-        // selectedFood: {},
+        selectedFood: {},
         scrollOptions: {
           click: false,
           directionLockThreshold: 0
@@ -153,30 +154,30 @@
       //     })
       //   }
       // },
-      //   selectFood(food) {
-      //     this.selectedFood = food
-      //     this._showFood()
-      //     this._showShopCartSticky()
-      //   },
+      selectFood (food) {
+        this.selectedFood = food
+        this._showFood()
+        // this._showShopCartSticky()
+      },
       onAdd (target) {
         this.$refs.shopCart.drop(target)
+      },
+      _showFood () {
+        this.foodComp = this.foodComp || this.$createFood({
+          $props: {
+            food: 'selectedFood'
+          }
+          // $events: {
+          //   add: (target) => {
+          //     this.shopCartStickyComp.drop(target)
+          //   },
+          //   leave: () => {
+          //     this._hideShopCartSticky()
+          //   }
+          // }
+        })
+        this.foodComp.show()
       }
-      //   _showFood() {
-      //     this.foodComp = this.foodComp || this.$createFood({
-      //       $props: {
-      //         food: 'selectedFood'
-      //       },
-      //       $events: {
-      //         add: (target) => {
-      //           this.shopCartStickyComp.drop(target)
-      //         },
-      //         leave: () => {
-      //           this._hideShopCartSticky()
-      //         }
-      //       }
-      //     })
-      //     this.foodComp.show()
-      //   },
       //   _showShopCartSticky() {
       //     this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
       //       $props: {
@@ -196,7 +197,7 @@
       Bubble,
       SupportIco,
       CartControl,
-      ShopCart
+      ShopCart,
       // Food
     }
   }
