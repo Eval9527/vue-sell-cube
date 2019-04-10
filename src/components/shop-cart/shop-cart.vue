@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="shopcart">
-      <div class="content">
+      <div class="content" @click="toggleList">
         <div class="content-left">
           <div class="logo-wrapper">
             <div class="logo" :class="{'highlight':totalCount>0}">
@@ -38,6 +38,7 @@
 
 <script>
   import Bubble from 'components/bubble/bubble'
+  // import ShopCartList from 'components/shop-cart-list/shop-cart-list'
 
   const BALL_LEN = 10
   const innerClsHook = 'inner-hook'
@@ -85,6 +86,8 @@
     created () {
       // 存放掉落小球，无需响应式
       this.dropBalls = []
+      // 默认 shop-cart-list 是收起状态
+      this.listFold = true
     },
     computed: {
       totalPrice () {
@@ -123,19 +126,41 @@
     },
     // },
     methods: {
-      //   toggleList() {
-      //     if (this.listFold) {
-      //       if (!this.totalCount) {
-      //         return
-      //       }
-      //       this.listFold = false
-      //       this._showShopCartList()
-      //       this._showShopCartSticky()
-      //     } else {
-      //       this.listFold = true
-      //       this._hideShopCartList()
-      //     }
-      //   },
+        toggleList() {
+          if (this.listFold) {
+            if (!this.totalCount) {
+              return
+            }
+            this.listFold = false
+            this._showShopCartList()
+            // this._showShopCartSticky()
+          } else {
+            this.listFold = true
+            this._hideShopCartList()
+          }
+        },
+        _showShopCartList() {
+          this.shopCartListComp = this.shopCartListComp || this.$createShopCartList({
+            $props: {
+              selectFoods: 'selectFoods'
+            },
+            $events: {
+              // leave: () => {
+              //   this._hideShopCartSticky()
+              // },
+              hide: () => {
+                this.listFold = true
+              // },
+              // add: (el) => {
+              //   this.shopCartStickyComp.drop(el)
+              }
+            }
+          })
+          this.shopCartListComp.show()
+        },
+        _hideShopCartList() {
+          this.shopCartListComp.hide()
+        },
       //   pay(e) {
       //     if (this.totalPrice < this.minPrice) {
       //       return
