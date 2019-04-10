@@ -135,10 +135,14 @@
     },
     methods: {
       fetch () {
-        // 获取 goods 数据
-        getGoods().then((goods) => {
-          this.goods = goods
-        })
+        if (!this.fetched) {
+          // 避免切换页面重复发生请求
+          this.fetched = true
+          // 获取 goods 数据
+          getGoods().then((goods) => {
+            this.goods = goods
+          })
+        }
       },
       //   if (!this.fetched) {
       //     this.fetched = true

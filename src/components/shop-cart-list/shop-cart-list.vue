@@ -43,16 +43,16 @@
 
 <script>
   import CartControl from 'components/cart-control/cart-control'
-  // import popupMixin from 'common/mixins/popup'
-  //
-  // const EVENT_SHOW = 'show'
+  import popupMixin from 'common/mixins/popup'
+
+  const EVENT_SHOW = 'show'
   const EVENT_ADD = 'add'
   const EVENT_LEAVE = 'leave'
-  const EVENT_HIDE = 'hide'
+  // const EVENT_HIDE = 'hide'
 
   export default {
     name: 'shop-cart-list',
-    // mixins: [popupMixin],
+    mixins: [popupMixin],
     props: {
       selectFoods: {
         type: Array,
@@ -61,29 +61,30 @@
         }
       }
     },
-    // created() {
-    //   this.$on(EVENT_SHOW, () => {
-    //     this.$nextTick(() => {
-    //       this.$refs.listContent.refresh()
-    //     })
-    //   })
-    // },
-    data () {
-      return {
-        visible: false
-      }
-    },
-    methods: {
-      show () {
-        this.visible = true
+    created() {
+      // 显示购物车列表时刷新，代替 show() 方法
+      this.$on(EVENT_SHOW, () => {
         this.$nextTick(() => {
           this.$refs.listContent.refresh()
         })
-      },
-      hide () {
-        this.visible = false
-        this.$emit(EVENT_HIDE)
-      },
+      })
+    },
+    // data () {
+    //   return {
+    //     visible: false
+    //   }
+    // },
+    methods: {
+      // show () {
+      //   this.visible = true
+      //   this.$nextTick(() => {
+      //     this.$refs.listContent.refresh()
+      //   })
+      // },
+      // hide () {
+      //   this.visible = false
+      //   this.$emit(EVENT_HIDE)
+      // },
       onAdd(target) {
         this.$emit(EVENT_ADD, target)
       },
@@ -95,7 +96,8 @@
         this.hide()
       },
       empty() {
-        this.dialogComp = this.$createDialog({
+        // this.dialogComp = this.$createDialog({
+        this.$createDialog({
           type: 'confirm',
           content: '清空购物车？',
           $events: {
@@ -106,8 +108,8 @@
               this.hide()
             }
           }
-        })
-        this.dialogComp.show()
+        }).show()
+        // this.dialogComp.show()
       }
     },
     components: {
