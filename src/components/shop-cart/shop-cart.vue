@@ -14,7 +14,7 @@
           <div class="price" :class="{'highlight':totalPrice>0}">￥{{totalPrice}}</div>
           <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
         </div>
-        <div class="content-right">
+        <div class="content-right" @click="pay">
           <div class="pay" :class="payClass">
             {{payDesc}}
           </div>
@@ -152,9 +152,9 @@
             hide: () => {
               this.listFold = true
               // this._hideShopCartSticky()
-              // },
-              // add: (el) => {
-              //   this.shopCartStickyComp.drop(el)
+            },
+            add: (el) => {
+              this.shopCartStickyComp.drop(el)
             }
           }
         })
@@ -180,16 +180,17 @@
       _hideShopCartSticky () {
         this.shopCartStickyComp.hide()
       },
-      //   pay(e) {
-      //     if (this.totalPrice < this.minPrice) {
-      //       return
-      //     }
-      //     this.$createDialog({
-      //       title: '支付',
-      //       content: `您需要支付${this.totalPrice}元`
-      //     }).show()
-      //     e.stopPropagation()
-      //   },
+      pay (e) {
+        if (this.totalPrice < this.minPrice) {
+          return
+        }
+        this.$createDialog({
+          title: '支付',
+          content: `您需要支付${this.totalPrice}元`
+        }).show()
+        // 阻止事件冒泡
+        e.stopPropagation()
+      },
       drop (el) {
         for (let i = 0; i < this.balls.length; i++) {
           const ball = this.balls[i]
@@ -272,14 +273,14 @@
     //   }
     // },
     watch: {
-      fold(newVal) {
+      fold (newVal) {
         this.listFold = newVal
+      },
+      totalCount (count) {
+        if (!this.fold && count === 0) {
+          this._hideShopCartList()
+        }
       }
-    //   totalCount(count) {
-    //     if (!this.fold && count === 0) {
-    //       this._hideShopCartList()
-    //     }
-    //   }
     },
     components: {
       Bubble

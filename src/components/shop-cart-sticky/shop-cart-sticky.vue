@@ -56,10 +56,10 @@
       },
       hide () {
         this.visible = false
+      },
+      drop (el) {
+        this.$refs.shopCart.drop(el)
       }
-      // drop (el) {
-      //   this.$refs.shopCart.drop(el)
-      // }
     },
     components: {
       ShopCart

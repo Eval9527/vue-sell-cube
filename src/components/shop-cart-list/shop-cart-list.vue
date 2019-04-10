@@ -15,7 +15,7 @@
         <div v-show="visible">
           <div class="list-header">
             <h1 class="title">购物车</h1>
-            <span class="empty">清空</span>
+            <span class="empty" @click="empty">清空</span>
           </div>
 <!--          当商品列表到达一定高度时变成滚动状态-->
           <cube-scroll class="list-content" ref="listContent">
@@ -30,7 +30,7 @@
                   <span>￥{{food.price*food.count}}</span>
                 </div>
                 <div class="cart-control-wrapper">
-                  <cart-control :food="food"></cart-control>
+                  <cart-control @add="onAdd" :food="food"></cart-control>
                 </div>
               </li>
             </ul>
@@ -46,7 +46,7 @@
   // import popupMixin from 'common/mixins/popup'
   //
   // const EVENT_SHOW = 'show'
-  // const EVENT_ADD = 'add'
+  const EVENT_ADD = 'add'
   const EVENT_LEAVE = 'leave'
   const EVENT_HIDE = 'hide'
 
@@ -76,35 +76,38 @@
     methods: {
       show () {
         this.visible = true
+        this.$nextTick(() => {
+          this.$refs.listContent.refresh()
+        })
       },
       hide () {
         this.visible = false
         this.$emit(EVENT_HIDE)
       },
-      // onAdd(target) {
-      //   this.$emit(EVENT_ADD, target)
-      // },
+      onAdd(target) {
+        this.$emit(EVENT_ADD, target)
+      },
       afterLeave() {
         this.$emit(EVENT_LEAVE)
       },
       // 点击蒙层时关闭
       maskClick() {
         this.hide()
-      // },
-      // empty() {
-      //   this.dialogComp = this.$createDialog({
-      //     type: 'confirm',
-      //     content: '清空购物车？',
-      //     $events: {
-      //       confirm: () => {
-      //         this.selectFoods.forEach((food) => {
-      //           food.count = 0
-      //         })
-      //         this.hide()
-      //       }
-      //     }
-      //   })
-      //   this.dialogComp.show()
+      },
+      empty() {
+        this.dialogComp = this.$createDialog({
+          type: 'confirm',
+          content: '清空购物车？',
+          $events: {
+            confirm: () => {
+              this.selectFoods.forEach((food) => {
+                food.count = 0
+              })
+              this.hide()
+            }
+          }
+        })
+        this.dialogComp.show()
       }
     },
     components: {
