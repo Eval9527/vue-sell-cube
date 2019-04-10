@@ -67,27 +67,27 @@
       minPrice: {
         type: Number,
         default: 0
-        // },
-        // sticky: {
-        //   type: Boolean,
-        //   default: false
-        // },
-        // fold: {
-        //   type: Boolean,
-        //   default: true
+      },
+      sticky: {
+        type: Boolean,
+        default: false
+      },
+      fold: {
+        type: Boolean,
+        default: true
       }
     },
     data () {
       return {
-        balls: createBalls()
-        // listFold: this.fold
+        balls: createBalls(),
+        listFold: this.fold
       }
     },
     created () {
       // 存放掉落小球，无需响应式
       this.dropBalls = []
       // 默认 shop-cart-list 是收起状态
-      this.listFold = true
+      // this.listFold = true
     },
     computed: {
       totalPrice () {
@@ -126,41 +126,60 @@
     },
     // },
     methods: {
-        toggleList() {
-          if (this.listFold) {
-            if (!this.totalCount) {
-              return
-            }
-            this.listFold = false
-            this._showShopCartList()
-            // this._showShopCartSticky()
-          } else {
-            this.listFold = true
-            this._hideShopCartList()
+      toggleList () {
+        if (this.listFold) {
+          if (!this.totalCount) {
+            return
           }
-        },
-        _showShopCartList() {
-          this.shopCartListComp = this.shopCartListComp || this.$createShopCartList({
-            $props: {
-              selectFoods: 'selectFoods'
+          this.listFold = false
+          this._showShopCartList()
+          // 弹出购物车列表的同时也调用购物车副本
+          this._showShopCartSticky()
+        } else {
+          this.listFold = true
+          this._hideShopCartList()
+        }
+      },
+      _showShopCartList () {
+        this.shopCartListComp = this.shopCartListComp || this.$createShopCartList({
+          $props: {
+            selectFoods: 'selectFoods'
+          },
+          $events: {
+            leave: () => {
+              this._hideShopCartSticky()
             },
-            $events: {
-              // leave: () => {
-              //   this._hideShopCartSticky()
-              // },
-              hide: () => {
-                this.listFold = true
+            hide: () => {
+              this.listFold = true
+              // this._hideShopCartSticky()
               // },
               // add: (el) => {
               //   this.shopCartStickyComp.drop(el)
-              }
             }
-          })
-          this.shopCartListComp.show()
-        },
-        _hideShopCartList() {
-          this.shopCartListComp.hide()
-        },
+          }
+        })
+        this.shopCartListComp.show()
+      },
+      _showShopCartSticky () {
+        this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
+          $props: {
+            selectFoods: 'selectFoods',
+            deliveryPrice: 'deliveryPrice',
+            minPrice: 'minPrice',
+            fold: 'listFold',
+            list: this.shopCartListComp
+          }
+        })
+        this.shopCartStickyComp.show()
+      },
+      _hideShopCartList () {
+        const list = this.sticky ? this.$parent.list : this.shopCartListComp
+        list.hide && list.hide()
+        // this.shopCartListComp.hide()
+      },
+      _hideShopCartSticky () {
+        this.shopCartStickyComp.hide()
+      },
       //   pay(e) {
       //     if (this.totalPrice < this.minPrice) {
       //       return
@@ -252,16 +271,16 @@
     //     this.shopCartStickyComp.hide()
     //   }
     // },
-    // watch: {
-    //   fold(newVal) {
-    //     this.listFold = newVal
-    //   },
+    watch: {
+      fold(newVal) {
+        this.listFold = newVal
+      }
     //   totalCount(count) {
     //     if (!this.fold && count === 0) {
     //       this._hideShopCartList()
     //     }
     //   }
-    // },
+    },
     components: {
       Bubble
     }

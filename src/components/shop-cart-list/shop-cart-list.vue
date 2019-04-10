@@ -10,6 +10,7 @@
     >
       <transition
         name="move"
+        @after-leave="afterLeave"
       >
         <div v-show="visible">
           <div class="list-header">
@@ -46,7 +47,7 @@
   //
   // const EVENT_SHOW = 'show'
   // const EVENT_ADD = 'add'
-  // const EVENT_LEAVE = 'leave'
+  const EVENT_LEAVE = 'leave'
   const EVENT_HIDE = 'hide'
 
   export default {
@@ -83,9 +84,9 @@
       // onAdd(target) {
       //   this.$emit(EVENT_ADD, target)
       // },
-      // afterLeave() {
-      //   this.$emit(EVENT_LEAVE)
-      // },
+      afterLeave() {
+        this.$emit(EVENT_LEAVE)
+      },
       // 点击蒙层时关闭
       maskClick() {
         this.hide()
