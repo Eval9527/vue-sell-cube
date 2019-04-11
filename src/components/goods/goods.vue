@@ -157,7 +157,7 @@
       selectFood (food) {
         this.selectedFood = food
         this._showFood()
-        // this._showShopCartSticky()
+        this._showShopCartSticky()
       },
       onAdd (target) {
         this.$refs.shopCart.drop(target)
@@ -166,38 +166,38 @@
         this.foodComp = this.foodComp || this.$createFood({
           $props: {
             food: 'selectedFood'
+          },
+          $events: {
+            add: (target) => {
+              this.shopCartStickyComp.drop(target)
+            },
+            leave: () => {
+              this._hideShopCartSticky()
+            }
           }
-          // $events: {
-          //   add: (target) => {
-          //     this.shopCartStickyComp.drop(target)
-          //   },
-          //   leave: () => {
-          //     this._hideShopCartSticky()
-          //   }
-          // }
         })
         this.foodComp.show()
+      },
+      _showShopCartSticky () {
+        this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
+          $props: {
+            selectFoods: 'selectFoods',
+            deliveryPrice: this.seller.deliveryPrice,
+            minPrice: this.seller.minPrice,
+            fold: true
+          }
+        })
+        this.shopCartStickyComp.show()
+      },
+      _hideShopCartSticky () {
+        this.shopCartStickyComp.hide()
       }
-      //   _showShopCartSticky() {
-      //     this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
-      //       $props: {
-      //         selectFoods: 'selectFoods',
-      //         deliveryPrice: this.seller.deliveryPrice,
-      //         minPrice: this.seller.minPrice,
-      //         fold: true
-      //       }
-      //     })
-      //     this.shopCartStickyComp.show()
-      //   },
-      //   _hideShopCartSticky() {
-      //     this.shopCartStickyComp.hide()
-      //   }
     },
     components: {
       Bubble,
       SupportIco,
       CartControl,
-      ShopCart,
+      ShopCart
       // Food
     }
   }
