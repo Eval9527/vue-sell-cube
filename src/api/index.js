@@ -1,8 +1,8 @@
 import { get } from './helpers'
 
-const getSeller = get('/api/seller')
-const getGoods = get('/api/goods')
-const getRatings = get('/api/ratings')
+const getSeller = get('/api/seller.json')
+const getGoods = get('/api/goods.json')
+const getRatings = get('/api/ratings.json')
 
 // 导出函数
 export {
