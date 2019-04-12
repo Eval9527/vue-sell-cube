@@ -111,6 +111,7 @@
         if (!this.fetched) {
           this.fetched = true
           getRatings({
+            // 请求 ratings 数据时附带 id
             id: this.seller.id
           }).then((ratings) => {
             this.ratings = ratings

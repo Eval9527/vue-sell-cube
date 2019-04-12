@@ -140,7 +140,10 @@
           // 避免切换页面重复发生请求
           this.fetched = true
           // 获取 goods 数据
-          getGoods().then((goods) => {
+          getGoods({
+            // 请求 goods 数据时附带 id
+            id: this.seller.id
+          }).then((goods) => {
             this.goods = goods
           })
         }
